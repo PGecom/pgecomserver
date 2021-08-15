@@ -42,6 +42,7 @@ const addCoach = function(req, res, next) {
   const coach = new coachModel(req.body);
   coach.save((error, docs) => {
     if (error) {
+      log('Error: ', error);
       return  res.status(500).json({
         message: 'Internal Server Error'
       })

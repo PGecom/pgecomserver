@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const { log } = console;
 
 const indexRouter = require('./routes/index');
 const coachRouter = require('./routes/coach');
@@ -17,8 +18,9 @@ const DB_USER = process.env.DB_USER || '';
 const DB_HOST = process.env.DB_HOST || '';
 const remoteDB = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}?retryWrites=true&w=majority`
 const localDB = 'mongodb://localhost/pgecom_database';
-
-mongoose.connect(remoteDB || localDB, {
+const DB_URL = process.env.NODE_ENV === 'production' ? remoteDB : localDB;
+log('DB URL: ', DB_URL);
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
