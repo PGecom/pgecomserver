@@ -63,6 +63,22 @@ const deleteCoachById = function(req, res, next) {
   });
 }
 
+const deleteAllCoaches = function(req, res, next) {
+  const { id } = req.query;
+  if (id) {
+    return next();
+  }
+  coachModel.deleteMany({}, req.body, (error, docs) => {
+    if (error) {
+      return res.status(500).json({
+        message: 'Internal Server Error'
+      });
+    }
+
+    return res.json(docs);
+  });
+}
+
 const updateCoachById = function(req, res, next) {
   const { id } = req.query;
   coachModel.findOneAndUpdate({ _id: id }, req.body, (error, docs) => {
@@ -91,6 +107,7 @@ router.route('/')
   .get(findCoachById)
   .put(updateCoachById)
   .post(addCoach)
+  .delete(deleteAllCoaches)
   .delete(deleteCoachById);
 
 module.exports = router;
